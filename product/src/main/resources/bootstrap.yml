@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: gulimall-product
+  cloud:
+    nacos:
+      config:
+        server-addr: 101.43.13.158:8848
+        namespace: 35f0b5af-13ed-49a3-84ff-666400d2f4b8
+      discovery:
+        server-addr: 101.43.13.158:8848
+
+server:
+  port: 10000

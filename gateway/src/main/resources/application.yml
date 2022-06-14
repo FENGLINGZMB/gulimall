@@ -1,0 +1,30 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: product_route
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /$\{segment}
+        - id: admin_route
+          uri: lb://renren-fast
+          predicates:
+            # 指定路径断言，当访问的是指定的路径时，就路由到该处
+            - Path=/api/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /renren-fast/$\{segment}
+        - id: baidu_route
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url,baidu
+
+    nacos:
+      discovery:
+        server-addr: 101.43.13.158:8848
+  application:
+    name: gulimall-gateway
+
+server:
+  port: 88
