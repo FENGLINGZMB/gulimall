@@ -1,10 +1,19 @@
-
 spring:
+  cloud:
+    nacos:
+      discovery:
+       # 用于服务发现的 nacos sever ip
+        server-addr: 101.43.13.158:8848
+
+  application:
+    name: gulimall-coupon
   datasource:
     username: root
     password: ws
     url: jdbc:mysql://101.43.13.158:3306/gulimall_sms
     driver-class-name: com.mysql.jdbc.Driver
+
+
 
 mybatis-plus:
   global-config:

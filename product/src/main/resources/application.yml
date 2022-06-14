@@ -4,6 +4,12 @@ spring:
     password: ws
     url: jdbc:mysql://101.43.13.158:3306/gulimall_pms
     driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 101.43.13.158:8848
+  application:
+    name: gulimall-product
 
 mybatis-plus:
   global-config:
