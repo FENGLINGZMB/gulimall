@@ -2,6 +2,12 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: oss_route
+          uri: lb://gulimall-thirdparty
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*), /$\{segment}
         - id: product_route
           uri: lb://gulimall-product
           predicates:

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: code-generator
+  cloud:
+    nacos:
+      config:
+        server-addr: 101.43.13.158:8848
+        namespace: 45cde1bd-2308-4edd-85ab-23e9a4f494ef
+        extension-configs:
+          - dataId: code-generator.properties
+            group: DEFAULT_GROUP
+            refresh: true
+      discovery:
+        server-addr: 101.43.13.158:8848

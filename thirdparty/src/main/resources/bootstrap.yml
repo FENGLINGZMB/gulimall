@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: gulimall-thirdparty
+  cloud:
+    nacos:
+      config:
+        server-addr: 101.43.13.158:8848
+        namespace: d60610c2-fa34-40e2-a4e7-dba48343af2a
+        extension-configs:
+          - dataId: gulimall-thirdparty.yml
+            group: DEFAULT_GROUP
+            refresh: true
+      discovery:
+        server-addr: 101.43.13.158:8848
+alibaba:
+  cloud:
+    access-key: LTAI5tHMLbqUhrBG8Rdcks1E
+    secret-key: DhOZ1ObL0XVsGlGhrDNW4L4sy39rvv
+    oss:
+      endpoint: oss-cn-shanghai.aliyuncs.com
+      bucket: gulimall-fenglingzmb
+server:
+  port: 12000

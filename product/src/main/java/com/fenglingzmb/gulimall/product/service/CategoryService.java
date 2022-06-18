@@ -15,9 +15,13 @@ import java.util.Map;
  * @date 2022-06-04 19:21:37
  */
 public interface CategoryService extends IService<CategoryEntity> {
+    // 找到 catelogId 对应的完整路径
+    Long[] findCatelogPath(Long catelogId);
 
     PageUtils queryPage(Map<String, Object> params);
 
     List<CategoryEntity> listWithTree();
+
+    void removeMenusByIds(List<Long> asList);
 }
 

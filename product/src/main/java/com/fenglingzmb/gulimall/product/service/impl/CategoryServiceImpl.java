@@ -22,6 +22,23 @@ import com.fenglingzmb.gulimall.product.service.CategoryService;
 public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity> implements CategoryService {
 
     @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        CategoryEntity categoryEntity = this.getById(catelogId);
+        if (categoryEntity == null)
+            return null;
+        List<Long> path = findCatelogPath(catelogId, new ArrayList<>());
+        return (Long[]) path.toArray(new Long[path.size()]);
+    }
+
+    private List<Long> findCatelogPath(Long catelogId, List<Long> path) {
+        CategoryEntity categoryEntity = this.getById(catelogId);
+        if (categoryEntity.getParentCid() != 0)
+            findCatelogPath(categoryEntity.getParentCid(), path);
+        path.add(catelogId);
+        return path;
+    }
+
+    @Override
     public PageUtils queryPage(Map<String, Object> params) {
         IPage<CategoryEntity> page = this.page(
                 new Query<CategoryEntity>().getPage(params),
@@ -39,23 +56,31 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         //筛选出一级分类
         List<CategoryEntity> top = entities.stream().filter((categoryEntity) -> {
             return categoryEntity.getParentCid() == 0;
-        }).map(menu->{
-            menu.setChildren(getChildren(menu,entities));
+        }).map(menu -> {
+            menu.setChildren(getChildren(menu, entities));
             return menu;
-        }).sorted((menu1,menu2)->{
-            return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
+        }).sorted((menu1, menu2) -> {
+            return (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort());
         }).collect(Collectors.toList());
         return top;
     }
+
+    @Override
+    public void removeMenusByIds(List<Long> asList) {
+        //具体的逻辑检查先空着，因为还不知道什么业务会用到 category
+        //TODO 检查当前删除的菜单，是否被其他地方引用
+        baseMapper.deleteBatchIds(asList);
+    }
+
     // 查找子菜单
-    private List<CategoryEntity> getChildren(CategoryEntity parent,List<CategoryEntity> all){
+    private List<CategoryEntity> getChildren(CategoryEntity parent, List<CategoryEntity> all) {
         return all.stream().filter(categoryEntity -> {
-            return categoryEntity.getParentCid() == parent.getCatId();
+            return categoryEntity.getParentCid().equals(parent.getCatId());
         }).map(categoryEntity -> {
-            categoryEntity.setChildren(getChildren(categoryEntity,all));
+            categoryEntity.setChildren(getChildren(categoryEntity, all));
             return categoryEntity;
-        }).sorted((menu1,menu2)->{
-            return (menu1.getSort()==null?0:menu1.getSort()) - (menu2.getSort()==null?0:menu2.getSort());
+        }).sorted((menu1, menu2) -> {
+            return (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort());
         }).collect(Collectors.toList());
     }
 

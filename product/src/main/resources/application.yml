@@ -4,7 +4,6 @@ spring:
     password: ws
     url: jdbc:mysql://101.43.13.158:3306/gulimall_pms
     driver-class-name: com.mysql.jdbc.Driver
-  cloud:
     nacos:
       discovery:
         server-addr: 101.43.13.158:8848
@@ -14,8 +13,14 @@ spring:
 mybatis-plus:
   global-config:
     db-config:
+      logic-delete-field: flag # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
       id-type: auto
   mapper-locations: classpath:/mapper/**/*.xml
 
 server:
   port: 10000
+logging:
+  level:
+    com.fenglingzmb.gulimall: debug
